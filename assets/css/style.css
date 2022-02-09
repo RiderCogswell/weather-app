@@ -1,0 +1,31 @@
+* {
+    overflow: hidden;
+}
+
+header {
+    background: skyblue;
+}
+
+.border-top {
+    border-top: 1px solid black;
+}
+
+.space {
+    margin: 10px;
+}
+
+.margin {
+    margin-top: 10px;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: springgreen;
+}
+
+.yellow {
+    background-color: yellow;
+}

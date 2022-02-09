@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>    
+    <header class="cell small-12 text-center">
+        <h1>Weather App</h1>
+    </header>
+    
+    <main class="grid-x grid-padding-x space">
+        <div class="card cell small-3">
+            <div class="card-divider">
+              <h3 class="text-center">Search for a city:</h3>
+            </div>
+            <form class="card-section" id="city-form">
+              <input type="text" name="cityname" id="city-name" autofocus="true" class="" placeholder="Enter city name">
+              <button type="submit" id="btn" class="button expanded">Search</button>
+            </form>
+        </div>
+        <div class="cell small-9">
+            <div id="current-forecast"></div>
+        </div> 
+        <div class="cell small-3 border-top">
+            <div id="saved-btns-container"></div>
+        </div>
+        <div class="cell small-9">
+            <div id="five-day-forecast" class="grid-x grid-margin-x small-up-2 medium-up-3"></div>
+        </div>
+    </main>
+
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>
