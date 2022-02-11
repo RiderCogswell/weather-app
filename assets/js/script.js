@@ -48,7 +48,28 @@ var getForecast = function(cities) {
 
 }
 
-var displayForecast = function(cities, searchTerm) {
+var getCurrentIcon = function(currentIconTag) {
+    var currentIcon = "http://openweathermap.org/img/wn/" + currentIconTag + "@2x.png";
+
+    // make a request
+    fetch(currentIcon)
+      .then(function(response) {
+          if (response.ok) {
+              response.json().then(function(data) {
+                  displayCurrentIcon();
+              });
+          }
+      })
+      .catch(function(error) {
+          alert("Unable to connect to Open Weather Map");
+      });
+
+}
+
+// var currentIconTag = cities.current.weather.icon;
+// console.log(currentIcon);
+
+var displayForecast = function(cities, nameOfCity) {
     // check if api returned data
     if (cities.length === 0) {
         currentForecastEl.textContent = "No cities found.";
@@ -57,7 +78,8 @@ var displayForecast = function(cities, searchTerm) {
 
     // clear old content
     currentForecastEl.textContent = "";
-    savedBtnsContainer.innerHTML = "<button class='button expanded margin'>" + searchTerm.value + "</button>";
+    fiveDayForecastEl.textContent = "";
+    savedBtnsContainer.innerHTML += "<a class='button expanded margin'>" + nameOfCity.name + "</a>";
 
     // getting data
     var currentTimestamp = cities.current.dt;
@@ -68,13 +90,14 @@ var displayForecast = function(cities, searchTerm) {
     var windSpeed = cities.current.wind_speed;
     var currentHumidity = cities.current.humidity;
     var weekForecast = cities.daily;
+
     
     // create and append variables to container
     var currentContainer = document.createElement("div")
     currentContainer.classList = "card"
     currentForecastEl.appendChild(currentContainer);    
     var cityNameList = document.createElement("h3");
-    cityNameList.textContent = "cityNameEl " + "(" + date + ")";
+    cityNameList.textContent = nameOfCity.name + " (" + date + ")";
     currentContainer.appendChild(cityNameList);
     var tempList = document.createElement("h4");
     tempList.textContent = "Temp: " + currentTemp + "°F";
@@ -83,7 +106,7 @@ var displayForecast = function(cities, searchTerm) {
     windList.textContent = "Wind: " + windSpeed + " MPH";
     currentContainer.appendChild(windList);
     var humidityList = document.createElement("h4");
-    humidityList.textContent = "Humidity: " + currentHumidity + " %";
+    humidityList.textContent = "Humidity: " + currentHumidity + "%";
     currentContainer.appendChild(humidityList);
     var uvList = document.createElement("h4");
     uvList.innerHTML = "UV Index: " + "<span id='uv-span'>" + uvIndex + "</span>";
@@ -105,17 +128,31 @@ var displayForecast = function(cities, searchTerm) {
     for (var i = 0; i < 5; i++) {
         
         // set variables
-        var dateFive = weekForecast[i].dt;
+        var fiveTimestamp = weekForecast[i].dt;
+        var fiveDate = new Date(fiveTimestamp * 1000);
+        var dateFive = (fiveDate.getMonth() + 1) + "/" + fiveDate.getDate() + "/" + fiveDate.getFullYear();
         var tempFive = weekForecast[i].temp.day;
         var humidityFive = weekForecast[i].humidity;
         var windFive = weekForecast[i].wind_speed;
 
-        // create and print elements to page
-        var forecastCardDiv = document.createElement("div");
-        forecastCardDiv.classList = "card";
-        fiveDayForecastEl.appendChild(forecastCardDiv);
-
         
+
+        // create and print elements to page
+        var forecastCardContainer = document.createElement("div");
+        forecastCardContainer.classList = "card gray";
+        fiveDayForecastEl.appendChild(forecastCardContainer);
+        var fiveDayDate = document.createElement("h3");
+        fiveDayDate.textContent = dateFive;
+        forecastCardContainer.appendChild(fiveDayDate);
+        var fiveDayTemp = document.createElement("h4");
+        fiveDayTemp.textContent = "Temp: " + tempFive + "°F";
+        forecastCardContainer.appendChild(fiveDayTemp);
+        var fiveDayHumidity = document.createElement("h4");
+        fiveDayHumidity.textContent = "Humidity: " + humidityFive + "%";
+        forecastCardContainer.appendChild(fiveDayHumidity);
+        var fiveDayWind = document.createElement("h4");
+        fiveDayWind.textContent = "Wind: " + windFive;
+        forecastCardContainer.appendChild(fiveDayWind);
     }
 
     console.log(weekForecast);

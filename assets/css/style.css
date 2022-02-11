@@ -29,3 +29,8 @@ header {
 .yellow {
     background-color: yellow;
 }
+
+.gray {
+    background-color: royalblue;
+    color: white;
+}
