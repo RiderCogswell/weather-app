@@ -21,8 +21,14 @@ var formSubmitHandler = function(event) {
     console.log(event);
 }
 
+// local storage
+var setStorage = function() {
+    localStorage.setItem("currentContainer", JSON.stringify(currentContainer));
+    localStorage.setItem("forecastCardContainer", JSON.stringify(forecastCardContainer))
+};
+
 // display data to page
-var getForecast = function(cities) {    
+var getForecast = function(cities) {  
     var cityLat = cities.coord.lat;
     var cityLon = cities.coord.lon;    
     var nameOfCity = cities.name;
@@ -48,28 +54,8 @@ var getForecast = function(cities) {
 
 }
 
-var getCurrentIcon = function(currentIconTag) {
-    var currentIcon = "http://openweathermap.org/img/wn/" + currentIconTag + "@2x.png";
-
-    // make a request
-    fetch(currentIcon)
-      .then(function(response) {
-          if (response.ok) {
-              response.json().then(function(data) {
-                  displayCurrentIcon();
-              });
-          }
-      })
-      .catch(function(error) {
-          alert("Unable to connect to Open Weather Map");
-      });
-
-}
-
-// var currentIconTag = cities.current.weather.icon;
-// console.log(currentIcon);
-
-var displayForecast = function(cities, nameOfCity) {
+var displayForecast = function(cities, nameOfCity) {     
+    
     // check if api returned data
     if (cities.length === 0) {
         currentForecastEl.textContent = "No cities found.";
@@ -90,6 +76,9 @@ var displayForecast = function(cities, nameOfCity) {
     var windSpeed = cities.current.wind_speed;
     var currentHumidity = cities.current.humidity;
     var weekForecast = cities.daily;
+    var currentIconTag = cities.current.weather[0].icon;
+    console.log(currentIconTag);
+    var currentIcon = "http://openweathermap.org/img/wn/" + currentIconTag + "@2x.png";
 
     
     // create and append variables to container
@@ -97,7 +86,7 @@ var displayForecast = function(cities, nameOfCity) {
     currentContainer.classList = "card"
     currentForecastEl.appendChild(currentContainer);    
     var cityNameList = document.createElement("h3");
-    cityNameList.textContent = nameOfCity.name + " (" + date + ")";
+    cityNameList.innerHTML = nameOfCity.name + " (" + date + ")" + "<img src='" + currentIcon + "' alt='icon'>";
     currentContainer.appendChild(cityNameList);
     var tempList = document.createElement("h4");
     tempList.textContent = "Temp: " + currentTemp + "°F";
@@ -111,6 +100,8 @@ var displayForecast = function(cities, nameOfCity) {
     var uvList = document.createElement("h4");
     uvList.innerHTML = "UV Index: " + "<span id='uv-span'>" + uvIndex + "</span>";
     currentContainer.appendChild(uvList);
+    
+    // color code UVI
     var uvDiv = document.querySelector("#uv-span");
     
     if (uvIndex > 6) {
@@ -134,6 +125,9 @@ var displayForecast = function(cities, nameOfCity) {
         var tempFive = weekForecast[i].temp.day;
         var humidityFive = weekForecast[i].humidity;
         var windFive = weekForecast[i].wind_speed;
+        var fiveIconTag = weekForecast[i].weather[0].icon;
+        var fiveIcon = "http://openweathermap.org/img/wn/" + fiveIconTag + ".png";
+
 
         
 
@@ -142,7 +136,7 @@ var displayForecast = function(cities, nameOfCity) {
         forecastCardContainer.classList = "card gray";
         fiveDayForecastEl.appendChild(forecastCardContainer);
         var fiveDayDate = document.createElement("h3");
-        fiveDayDate.textContent = dateFive;
+        fiveDayDate.innerHTML = dateFive + "<img src='" + fiveIcon + "' alt='icon'>";
         forecastCardContainer.appendChild(fiveDayDate);
         var fiveDayTemp = document.createElement("h4");
         fiveDayTemp.textContent = "Temp: " + tempFive + "°F";
@@ -156,8 +150,7 @@ var displayForecast = function(cities, nameOfCity) {
     }
 
     console.log(weekForecast);
-
-
+    setStorage();
 }
 
 
@@ -179,6 +172,8 @@ var getCurrentCoord = function(city) {
             alert("Unable to connect to Open Weather Map");
         });
 };
+
+
 
 
 // display response data on page
