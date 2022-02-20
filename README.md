@@ -20,5 +20,5 @@ https://ridercogswell.github.io/weather-app/
 
 ## Contact
 * Rider Cogswell
-* Email: [ridercogswell@gmail.com](mailto:ridercogswell@gmail.com)
+* [Email](mailto:ridercogswell@gmail.com)
 * [LinkedIn](URL "https://www.linkedin.com/in/rider-cogswell-608086160")
