@@ -1,5 +1,5 @@
 * {
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 header {
@@ -33,4 +33,15 @@ header {
 .gray {
     background-color: royalblue;
     color: white;
+}
+
+.grow {
+    flex: 3 0;
+}
+
+@media screen and (max-width: 568px) {
+    main {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }
